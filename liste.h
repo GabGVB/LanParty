@@ -13,6 +13,7 @@ struct Node
     struct Player *team;
     struct Node   *next;
     int no_players;
+    float score;
 };
 
 typedef struct Node Node;
@@ -24,3 +25,8 @@ Player* read_teamates (int no_players, FILE *fisD, char *firstName, char *second
 void addAtBeginning(Node **head,int no_teams,char *name_team,char *firstName, char *secondName,FILE *fisD);
 
 void display(Node *head,FILE *fisR);
+
+void CalculateScore (Node **head);
+int powof2 (int no_teams);
+Node* LowestScore (Node *head,float score_min);
+void RemoveTeam ( Node **head, Node *del,int *no_teams);
