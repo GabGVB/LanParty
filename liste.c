@@ -1,5 +1,5 @@
 #include "liste.h"
-void RemoveTeam ( Node **head, Node *del,int *no_teams)
+void RemoveTeambyAdress ( Node **head, Node *del,int *no_teams)
 {
     Node *headcopy=*head;
     if(*head==del)
@@ -25,6 +25,39 @@ void RemoveTeam ( Node **head, Node *del,int *no_teams)
     }
 
 }
+
+void RemoveTeambyValue ( Node **head, char *name_team)
+{
+    if (*head==NULL) return;
+    Node *headcopy=*head;
+    if(strcmp((*head)->teamName,name_team)==0)
+    {
+        *head=(*head)->next;
+        // (*no_teams)--;
+        free(headcopy);
+        return;
+    }
+
+    Node *prev=*head;
+    while (headcopy!=NULL)
+    {
+
+        if(strcmp(headcopy->teamName,name_team)!=0)
+        {
+            prev=headcopy;
+            headcopy=headcopy->next;
+        }
+        else
+        {
+            prev->next=headcopy->next;
+            free(headcopy->teamName);
+            free(headcopy);
+            return;
+        }
+    }
+
+}
+
 Node* LowestScore (Node *head,float score_min)
 {
     Node *del;
@@ -43,7 +76,7 @@ Node* LowestScore (Node *head,float score_min)
 int powof2 (int no_teams)
 {
     int pow2=1;
-    while(pow2<no_teams>>1)
+    while(pow2<=no_teams>>1)
         pow2=pow2<<1;
     return pow2;
 }
@@ -76,6 +109,13 @@ Player* read_teamates (int no_players, FILE *fisD, char *firstName, char *second
     return Player_stats;
 }
 
+int charinvalid (char c)
+{
+    if (c>='a'&&c<='z') return 0;
+    if (c>='A'&&c<='Z') return 0;
+    if (c>='0'&&c<='9') return 0;
+    return 1;
+}
 void addAtBeginning(Node **head,int no_teams,char *name_team,char *firstName, char *secondName,FILE *fisD)
 {
     Node* newNode = (Node*)malloc(sizeof(Node));
@@ -84,12 +124,30 @@ void addAtBeginning(Node **head,int no_teams,char *name_team,char *firstName, ch
     fscanf(fisD,"%d",&no_players);
     fgetc(fisD);
     fgets(name_team,100,fisD);
-    name_team[strlen(name_team)-1]='\0';
+    int len=strlen(name_team)-1;
+    while (charinvalid(name_team[len]))
+    {
+        name_team[len]='\0';
+        len--;
+    }
+
     newNode->teamName=strdup(name_team);
     newNode->team =read_teamates(no_players, fisD, firstName, secondName);
     newNode->no_players=no_players;
     newNode->next = *head;
     *head = newNode;
+}
+
+
+void addNewList (Node **head, char*name_team, float score)
+{
+    Node* newNode = (Node*)malloc(sizeof(Node));
+    //printf("%s\n",name_team);
+    newNode->teamName=strdup(name_team);
+    //printf("%s\n",newNode->teamName);
+    newNode->score=score;
+    newNode->next=*head;
+    *head=newNode;
 }
 
 void display(Node *head, FILE *fisR)
