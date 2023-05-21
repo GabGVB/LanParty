@@ -1,4 +1,4 @@
-#README Lan Party
+# README Lan Party
 
 Acesta este un fișier README pentru codul care implementează un LanParty. Codul e scris în limbajul C și utilizează mai multe fișiere header pentru a implementa diferite structuri de date și funcții auxiliare.
 ##  Descriere cod
