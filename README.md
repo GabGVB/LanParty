@@ -13,9 +13,6 @@ Codul constă în funcția main și utilizează fișierele header "arbori.h", "c
 7.  Operații pe arbore binar de căutare: Codul definește o structură numită NodArb cu ajutorul careia se va realiza un arbore BTS prin care se afiseaza clasamentul  clasamentul primelor 8 echipe in ordine descrescatoare [Task4]
 8.  Sortare și operații pe arbore AVL: Codul sortează lista înlănțuită (top8) și creează un arbore AVL folosind lista sortată. Apoi, este afișat nivelul 2 al arborelui AVL in ordine descrescatoare [Task 5]
 
-## Contributing
-
-Contributions to this code are currently not accepted as this is a sample code provided for reference purposes.
 ## Contact
 
 For any inquiries or questions, please contact the author of this code.
