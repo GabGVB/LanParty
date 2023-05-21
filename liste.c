@@ -1,4 +1,31 @@
 #include "liste.h"
+
+void freePlayer(Player **p, int no_player)
+{
+    for (int i=0; i<no_player; i++)
+    {
+        free((*p)[i].firstName);
+        free((*p)[i].secondName);
+    }
+}
+void freeNode (Node **n)
+{
+    freePlayer(&(*n)->team,(*n)->no_players);
+    free((*n)->team);
+    free((*n)->teamName);
+    free(*n);
+}
+void deleteList ( Node ** head )
+{
+    Node * headcopy ;
+    while (* head != NULL )
+    {
+        headcopy =(* head ) -> next ;
+        free (* head );
+        * head = headcopy ;
+    }
+    * head = NULL ;
+}
 void RemoveTeambyAdress ( Node **head, Node *del,int *no_teams)
 {
     Node *headcopy=*head;
@@ -6,7 +33,7 @@ void RemoveTeambyAdress ( Node **head, Node *del,int *no_teams)
     {
         *head=(*head)->next;
         (*no_teams)--;
-        free(headcopy);
+        freeNode(&headcopy);
         return;
     }
 
@@ -16,14 +43,12 @@ void RemoveTeambyAdress ( Node **head, Node *del,int *no_teams)
         if(headcopy->next==del)
         {
             headcopy->next=del->next;
-            free(del);
+            freeNode(&del);
             (*no_teams)--;
             return;
-
         }
         headcopy=headcopy->next;
     }
-
 }
 
 void RemoveTeambyValue ( Node **head, char *name_team)
@@ -34,7 +59,7 @@ void RemoveTeambyValue ( Node **head, char *name_team)
     {
         *head=(*head)->next;
         // (*no_teams)--;
-        free(headcopy);
+        freeNode(&headcopy);
         return;
     }
 
@@ -50,8 +75,7 @@ void RemoveTeambyValue ( Node **head, char *name_team)
         else
         {
             prev->next=headcopy->next;
-            free(headcopy->teamName);
-            free(headcopy);
+            freeNode(&headcopy);
             return;
         }
     }

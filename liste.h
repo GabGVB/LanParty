@@ -19,7 +19,9 @@ struct Node
 
 typedef struct Node Node;
 typedef struct Player Player;
-
+void deleteList ( Node ** head );
+void freePlayer(Player **p, int no_player);
+void freeNode (Node **n);
 
 Player* read_teamates (int no_players, FILE *fisD, char *firstName, char *secondName);
 

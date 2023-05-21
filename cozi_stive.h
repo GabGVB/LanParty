@@ -31,3 +31,4 @@ void popQualified(Node**top,Queue *q, FILE *fisR);
 void popEliminated(Node**top, Node**head,int no_teams);
 
 void afisWinners(Node *top, FILE *fisR);
+void freeNode_char (Node ** n);

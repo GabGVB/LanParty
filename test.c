@@ -1,19 +1,26 @@
 #include "arbori.h"
 
-
 int main(int argc,char**argv)
 {
     FILE *fisC, *fisD, *fisR;
     fisC=fopen(argv[1],"r");
     fisD=fopen(argv[2],"r");
     fisR = fopen(argv[3], "w");
-
+    /*
+    int main()
+{
+        FILE *fisC, *fisD, *fisR;
+        fisC=fopen("c.in","r");
+        fisD=fopen("d.in","r");
+        fisR = fopen("r.out", "w");
+*/
     int rez=0,c,i;
-    for(i=0; i<5; i++)
-    {
+    for(i=0; i<5; i++) //daca se cere cerinta n
+    {                 //cosider 1,..,n-1 ca fiind cerute
         fscanf(fisC,"%d",&c);
         rez+=c;
     }
+
     Node *head;
     head=NULL;
 
@@ -28,6 +35,9 @@ int main(int argc,char**argv)
     for (i=0; i<no_teams; i++)
         addAtBeginning(&head,no_teams,name_team,firstName,secondName,fisD);
 
+    free(name_team);
+    free(firstName);
+    free(secondName);
     if(rez==1) display(head,fisR);
 
     CalculateScore(&head);
@@ -74,14 +84,13 @@ int main(int argc,char**argv)
                 deQueue(q,fisR,&team1,&team2);
                 if (team1->score>team2->score)
                 {
-
-
                     push(&qualified,team1);
                     push(&eliminated,team2);
+
                     if(no_teams==8)
                         addNewList(&top8,team1->teamName,team1->score);
-
-                    //printf("%s\n",top8->teamName);
+                    freeNode_char(&team1);
+                    freeNode_char(&team2);
                 }
                 else
                 {
@@ -90,8 +99,9 @@ int main(int argc,char**argv)
                     push(&eliminated,team1);
                     if(no_teams==8)
                         addNewList(&top8,team2->teamName,team2->score);
+                    freeNode_char(&team1);
+                    freeNode_char(&team2);
                 }
-
             }
 
             fprintf(fisR,"\nWINNERS OF ROUND NO:%d\n",round);
@@ -104,26 +114,38 @@ int main(int argc,char**argv)
             {
                 popEliminated(&eliminated,&head,no_teams);
             }
-
         }
     }
     //-----------------------------------------------------------------------------
-
-
-    if (rez==4)
+    NodArb * root = NULL;
+    if (rez>=4)
     {
-        NodArb * root = NULL;
-
         aux=top8;
         while(aux!=NULL)
         {
-            //printf("%s\n",aux->teamName);
             root=insert(root,aux->score,aux->teamName);
             aux=aux->next;
         }
 
         fprintf(fisR,"\nTOP 8 TEAMS:\n");
         inordine(root,fisR);
+        deleteArbore(&root);
     }
+    if (rez==5)
+    {
+        bubbleSort(&top8);
+        NodArb *rootAVL= NULL;
+
+        aux=top8;
+        while(aux!=NULL)
+        {
+            rootAVL=AVLinsert(rootAVL,aux->score,aux->teamName);
+            aux=aux->next;
+        }
+        fprintf(fisR,"\nTHE LEVEL 2 TEAMS ARE: \n");
+        afisAVL(rootAVL, fisR);
+        deleteArbore(&rootAVL);
+    }
+    deleteList(&top8);
     return 0;
 }
